@@ -5,7 +5,6 @@
 #include "Character.h"
 #include "console.h"
 
-
 class Monster : public Character
 {
 public:

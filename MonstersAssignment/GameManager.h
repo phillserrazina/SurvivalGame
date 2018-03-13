@@ -15,6 +15,8 @@ using namespace std;
 class GameManager
 {
 private:
+	int turnsSurvived;
+
 	int numOfPlayers;
 	int numOfMobs;
 

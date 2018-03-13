@@ -2,6 +2,8 @@
 
 GameManager::GameManager()
 {
+	turnsSurvived = 0;
+
 	gridWidth = 50;
 	gridHeight = 20;
 
@@ -782,9 +784,9 @@ void GameManager::setPlayersInfo()
 		int randY = math.getRandom(1, grid.getGridHeight());
 
 		// Ask the user for the Player's name and avatar
-		cout << "What is Player " << i << "'s name?" << endl;
+		cout << "What is the Player's name?" << endl;
 		cin >> pName;
-		cout << endl << "What is Player " << i << "'s avatar?" << endl;
+		cout << endl << "What is the Player's avatar?" << endl;
 		cin >> pAvatar;
 
 		// Create a new Player with the given info and a random position
@@ -888,6 +890,8 @@ void GameManager::playGame()
 					gameOver = true;
 				}
 			}
+
+			turnsSurvived++;
 		}
 	}
 }
@@ -895,6 +899,7 @@ void GameManager::playGame()
 void GameManager::gameOver()
 {
 	int keyPressed = 0;
+	int finalScore = (turnsSurvived + Monster::killCount) * 2;
 	bool exitResults = false;
 
 	while (!playerVector.empty())
@@ -913,9 +918,11 @@ void GameManager::gameOver()
 	Console::setColour(Console::AQUA, Console::BLACK);
 	cout << endl << "Results:" << endl;
 	Console::setColour(Console::WHITE, Console::BLACK);
-	cout << "SCORE: " << Monster::killCount << endl;
-	cout << "MONSTERS KILLED: " << endl;
-	cout << "TURNS SURVIVED: " << endl;
+	cout << "SCORE: " << finalScore << endl;
+	cout << "MONSTERS KILLED: " << Monster::killCount << endl;
+	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
+
+	Monster::killCount = 0;
 
 	while (exitResults != true)
 	{
