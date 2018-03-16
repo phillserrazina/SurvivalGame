@@ -6,9 +6,9 @@
 #include<conio.h>
 #include "GridManager.h"
 #include "console.h"
-#include "GameController.h"
 #include "Player.h"
 #include "Monster.h"
+#include "GameController.h"
 
 using namespace std;
 
@@ -28,8 +28,7 @@ private:
 
 	Grid grid;
 
-	vector<Player> playerVector;
-	vector<Monster> mobVector;
+	Controller controller;
 
 public:
 	GameManager();

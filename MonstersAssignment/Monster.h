@@ -34,6 +34,8 @@ public:
 	void setDead(bool);
 	bool getDead();
 
+	static int kill;
+
 	~Monster();
 
 private:

@@ -1,5 +1,7 @@
 #include "Monster.h"
 
+int Monster::kill = 0;
+
 Monster::Monster(std::string s, char c) : Character(s, c)
 {
 	state = ROAMING;
@@ -74,5 +76,5 @@ bool Monster::getDead()
 
 Monster::~Monster()
 {
-
+	kill++;
 }

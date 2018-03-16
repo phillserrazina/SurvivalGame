@@ -8,7 +8,6 @@
 #include "Player.h"
 #include "Monster.h"
 #include "GridManager.h"
-#include "GameManager.h"
 #include "console.h"
 #include "Bomb.h"
 
@@ -17,16 +16,13 @@ using namespace std;
 class Controller
 {
 private:
-	vector<Monster> mobVec;
-	vector<Player> playerVec;
-
 	Bomb bomb;
 
 public:
 	Controller();
 
-	void setMobVec(vector<Monster> *);
-	void setPlayerVec(vector<Player> *);
+	vector<Monster> mobVector;
+	vector<Player> playerVector;
 
 	void movePlayer(Player &, Grid);
 

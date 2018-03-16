@@ -5,22 +5,6 @@ Controller::Controller()
 
 }
 
-void Controller::setMobVec(vector<Monster> *mv)
-{
-	for (int i = 0; i < mv->size(); i++)
-	{
-		mobVec.push_back(mv->at(i));
-	}
-}
-
-void Controller::setPlayerVec(vector<Player> *pv)
-{
-	for (int i = 0; i < pv->size(); i++)
-	{
-		playerVec.push_back(pv->at(i));
-	}
-}
-
 /*
 	"movePlayer" Function controlls input necessary to move the player:
 	a = left;
@@ -149,7 +133,7 @@ void Controller::movePlayer(Player &player, Grid grid)
 	
 	if (bomb.getBombPlaced() == true)
 	{
-		bomb.boomBomb(mobVec, player);
+		bomb.boomBomb(mobVector, player);
 
 		Console::setCursorPosition(bomb.getY(), bomb.getX());
 		cout << bomb.getAvatar();

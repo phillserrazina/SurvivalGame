@@ -795,7 +795,7 @@ void GameManager::setPlayersInfo()
 		p.setY(randY);
 
 		// Push the new player into the Player Vector
-		playerVector.push_back(p);
+		controller.playerVector.push_back(p);
 	}
 }
 
@@ -816,7 +816,7 @@ void GameManager::setMobsInfo()
 		m.setY(randY);
 
 		// Push the new player into the Player Vector
-		mobVector.push_back(m);
+		controller.mobVector.push_back(m);
 	}
 }
 
@@ -842,19 +842,19 @@ void GameManager::prepareGame()
 	grid.drawGrid();
 
 	// After the grid, draw the monsters
-	for (int i = 0; i < mobVector.size(); i++)
+	for (int i = 0; i < controller.mobVector.size(); i++)
 	{
 		Console::setColour(Console::GREEN, Console::BLACK);
-		Console::setCursorPosition(mobVector[i].getY(), mobVector[i].getX());
-		cout << mobVector[i].getAvatar();
+		Console::setCursorPosition(controller.mobVector[i].getY(), controller.mobVector[i].getX());
+		cout << controller.mobVector[i].getAvatar();
 	}
 
 	// Once that all the monsters have been drawn, draw the player
-	for (int i = 0; i < playerVector.size(); i++)
+	for (int i = 0; i < controller.playerVector.size(); i++)
 	{
 		Console::setColour(Console::WHITE, Console::BLACK);
-		Console::setCursorPosition(playerVector[i].getY(), playerVector[i].getX());
-		cout << playerVector[i].getAvatar();
+		Console::setCursorPosition(controller.playerVector[i].getY(), controller.playerVector[i].getX());
+		cout << controller.playerVector[i].getAvatar();
 	}
 }
 
@@ -862,28 +862,22 @@ void GameManager::playGame()
 {
 	// Variables
 
-	Controller controller;
-
 	bool gameOver = false;
 
 	// GAME LOOP
 	while (gameOver != true)
 	{
-		// Update the Controller Vectors
-		controller.setMobVec(&mobVector);
-		controller.setPlayerVec(&playerVector);
-
 		// Move the Player
-		for (int i = 0; i < playerVector.size(); i++)
+		for (int i = 0; i < controller.playerVector.size(); i++)
 		{
-			controller.movePlayer(playerVector[i], grid);
+			controller.movePlayer(controller.playerVector[i], grid);
 
 			// Move the monsters
-			for (int j = 0; j < mobVector.size(); j++)
+			for (int j = 0; j < controller.mobVector.size(); j++)
 			{
-				if (mobVector[j].getDead() != true)
+				if (controller.mobVector[j].getDead() != true)
 				{
-					controller.moveMob(mobVector[j], playerVector[i], grid);
+					controller.moveMob(controller.mobVector[j], controller.playerVector[i], grid);
 				}
 				else
 				{
@@ -892,8 +886,8 @@ void GameManager::playGame()
 				}
 
 				// If the monster touches the player
-				if ((mobVector[j].getX() == playerVector[i].getX()) &&
-					((mobVector[j].getY() == playerVector[i].getY())))
+				if ((controller.mobVector[j].getX() == controller.playerVector[i].getX()) &&
+					((controller.mobVector[j].getY() == controller.playerVector[i].getY())))
 				{
 					gameOver = true;
 				}
@@ -923,15 +917,15 @@ void GameManager::gameOver()
 	bool exitResults = false;
 
 	// Reset Player Vector for the next game
-	while (!playerVector.empty())
+	while (!controller.playerVector.empty())
 	{
-		playerVector.pop_back();
+		controller.playerVector.pop_back();
 	}
 
 	// Reset Mob Vector for the next game
-	while (!mobVector.empty())
+	while (!controller.mobVector.empty())
 	{
-		mobVector.pop_back();
+		controller.mobVector.pop_back();
 		counter++;
 	}
 
@@ -947,7 +941,7 @@ void GameManager::gameOver()
 	cout << endl << "Results:" << endl;
 	Console::setColour(Console::WHITE, Console::BLACK);
 	cout << "SCORE: " << finalScore << endl;
-	cout << "MONSTERS KILLED: " << killCount << endl;
+	cout << "MONSTERS KILLED: " << Monster::kill << endl;
 	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
 
 	while (exitResults != true)
