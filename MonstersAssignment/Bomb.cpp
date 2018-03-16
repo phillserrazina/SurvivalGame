@@ -2,9 +2,9 @@
 
 Bomb::Bomb()
 {
-	damage = 10;
+	damage = 3;
 	timer = 67;
-	range = 10;
+	range = 5;
 
 	name = "Bomb";
 	avatar = 'B';

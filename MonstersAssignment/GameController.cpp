@@ -5,6 +5,11 @@ Controller::Controller()
 
 }
 
+Bomb Controller::getBomb()
+{
+	return bomb;
+}
+
 /*
 	"movePlayer" Function controlls input necessary to move the player:
 	a = left;

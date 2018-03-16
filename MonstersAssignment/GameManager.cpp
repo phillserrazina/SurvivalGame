@@ -11,7 +11,7 @@ GameManager::GameManager()
 	gridY = 0;
 
 	numOfPlayers = 1;
-	numOfMobs = 5;
+	numOfMobs = 10;
 }
 
 void GameManager::setVisualSettings()
@@ -878,22 +878,36 @@ void GameManager::playGame()
 				if (controller.mobVector[j].getDead() != true)
 				{
 					controller.moveMob(controller.mobVector[j], controller.playerVector[i], grid);
-				}
-				else
-				{
-					/*mobVector.erase(mobVector.begin() + j);
-					j--;*/
-				}
 
-				// If the monster touches the player
-				if ((controller.mobVector[j].getX() == controller.playerVector[i].getX()) &&
-					((controller.mobVector[j].getY() == controller.playerVector[i].getY())))
+					// If the monster touches the player
+					if ((controller.mobVector[j].getX() == controller.playerVector[i].getX()) &&
+						((controller.mobVector[j].getY() == controller.playerVector[i].getY())))
+					{
+						gameOver = true;
+					}
+
+					// If the monster touches the bomb
+					if ((controller.mobVector[j].getX() == controller.getBomb().getX()) &&
+						((controller.mobVector[j].getY() == controller.getBomb().getY())))
+					{
+						controller.getBomb().setTimer(0);
+						controller.getBomb().boomBomb(controller.mobVector, controller.playerVector[i]);
+					}
+				}
+				else if(controller.mobVector[j].getDead() == true)
 				{
-					gameOver = true;
+					Console::setCursorPosition(controller.mobVector[j].getY(), controller.mobVector[j].getX());
+					cout << " ";
+					controller.mobVector.erase(controller.mobVector.begin() + j);
 				}
 			}
 
 			turnsSurvived++;
+
+			if (controller.mobVector.empty())
+			{
+				gameOver = true;
+			}
 		}
 	}
 }
@@ -941,7 +955,7 @@ void GameManager::gameOver()
 	cout << endl << "Results:" << endl;
 	Console::setColour(Console::WHITE, Console::BLACK);
 	cout << "SCORE: " << finalScore << endl;
-	cout << "MONSTERS KILLED: " << Monster::kill << endl;
+	cout << "MONSTERS KILLED: " << killCount << endl;
 	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
 
 	while (exitResults != true)

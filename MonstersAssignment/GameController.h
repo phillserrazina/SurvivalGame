@@ -24,6 +24,8 @@ public:
 	vector<Monster> mobVector;
 	vector<Player> playerVector;
 
+	Bomb getBomb();
+
 	void movePlayer(Player &, Grid);
 
 	void mobRoaming(Monster &, Player &, Grid grid);
