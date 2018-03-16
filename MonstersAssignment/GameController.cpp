@@ -1,20 +1,8 @@
 #include "GameController.h"
 
-bool Controller::bombPlaced = false;
-
 Controller::Controller()
 {
-	bombPlaced = false;
-}
 
-void Controller::setBombPlaced(bool b)
-{
-	bombPlaced = b;
-}
-
-bool Controller::getBombPlaced()
-{
-	return bombPlaced;
 }
 
 void Controller::setMobVec(vector<Monster> *mv)
@@ -48,22 +36,6 @@ void Controller::movePlayer(Player &player, Grid grid)
 
 	int lastX = player.getX();
 	int lastY = player.getY();
-
-	bomb.boomBomb(mobVec, player);
-
-	/*if (bombPlaced == true)
-	{
-		Console::setCursorPosition(bomb.getY(), bomb.getX());
-		cout << bomb.getAvatar();
-	}
-	else if (bombPlaced == false)
-	{
-		Console::setCursorPosition(bomb.getY(), bomb.getX());
-		cout << " ";
-	}*/
-
-	Console::setCursorPosition(bomb.getY(), bomb.getX());
-	cout << bomb.getAvatar();
 
 	char input = _getch();
 
@@ -109,13 +81,13 @@ void Controller::movePlayer(Player &player, Grid grid)
 		break;
 
 	case 'b':
-		if (bombPlaced == false)
+		if (bomb.getBombPlaced() == false)
 		{
 			bomb.setX(player.getX());
 			bomb.setY(player.getY());
 		}
 
-		bombPlaced = true;
+		bomb.setBombPlaced(true);
 		break;
 
 	// Detect Arrows
@@ -174,6 +146,21 @@ void Controller::movePlayer(Player &player, Grid grid)
 	Console::setColour(Console::WHITE, Console::BLACK);
 	Console::setCursorPosition(player.getY(), player.getX());
 	std::cout << player.getAvatar();
+	
+	if (bomb.getBombPlaced() == true)
+	{
+		bomb.boomBomb(mobVec, player);
+
+		Console::setCursorPosition(bomb.getY(), bomb.getX());
+		cout << bomb.getAvatar();
+	}
+	if (bomb.getBombPlaced() == false)
+	{
+		Console::setCursorPosition(bomb.getY(), bomb.getX());
+		cout << " ";
+		bomb.setX(105);
+		bomb.setY(1);
+	}
 }
 
 /*

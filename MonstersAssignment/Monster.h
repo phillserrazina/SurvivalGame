@@ -31,8 +31,8 @@ public:
 	void setHealth(int);
 	int getHealth();
 
-	void setCanMove(bool);
-	bool getCanMove();
+	void setDead(bool);
+	bool getDead();
 
 	~Monster();
 
@@ -44,7 +44,7 @@ private:
 	int chasingCooldown;
 	int health;
 
-	bool canMove;
+	bool isDead;
 };
 
 #endif // !MONSTER_H

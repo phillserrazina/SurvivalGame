@@ -62,14 +62,14 @@ int Monster::getHealth()
 	return health;
 }
 
-void Monster::setCanMove(bool b)
+void Monster::setDead(bool b)
 {
-	canMove = b;
+	isDead = b;
 }
 
-bool Monster::getCanMove()
+bool Monster::getDead()
 {
-	return canMove;
+	return isDead;
 }
 
 Monster::~Monster()

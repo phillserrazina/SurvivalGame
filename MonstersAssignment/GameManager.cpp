@@ -881,7 +881,15 @@ void GameManager::playGame()
 			// Move the monsters
 			for (int j = 0; j < mobVector.size(); j++)
 			{
-				controller.moveMob(mobVector[j], playerVector[i], grid);
+				if (mobVector[j].getDead() != true)
+				{
+					controller.moveMob(mobVector[j], playerVector[i], grid);
+				}
+				else
+				{
+					/*mobVector.erase(mobVector.begin() + j);
+					j--;*/
+				}
 
 				// If the monster touches the player
 				if ((mobVector[j].getX() == playerVector[i].getX()) &&
@@ -910,7 +918,7 @@ void GameManager::gameOver()
 		turnResult = turnsSurvived - 1;
 	}
 
-	double exponent = 2;
+	double base = 1.05;
 	int finalScore = 0;
 	bool exitResults = false;
 
@@ -930,7 +938,7 @@ void GameManager::gameOver()
 	// Get how many monsters were killed
 	killCount = numOfMobs - counter;
 
-	finalScore = (static_cast<int>(CostumMath::getPower((turnResult), exponent)) + killCount);
+	finalScore = (static_cast<int>(CostumMath::getPower(base, (turnResult / 2)) + killCount));
 
 	Console::setCursorPosition(0, 0);
 	Console::setColour(Console::WHITE, Console::RED);

@@ -6,11 +6,11 @@
 #include<vector>
 #include "CostumMath.h"
 #include "Player.h"
-#include "Bomb.h"
 #include "Monster.h"
 #include "GridManager.h"
 #include "GameManager.h"
 #include "console.h"
+#include "Bomb.h"
 
 using namespace std;
 
@@ -24,11 +24,6 @@ private:
 
 public:
 	Controller();
-
-	static bool bombPlaced;
-
-	void setBombPlaced(bool);
-	bool getBombPlaced();
 
 	void setMobVec(vector<Monster> *);
 	void setPlayerVec(vector<Player> *);
