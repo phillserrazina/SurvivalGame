@@ -6,6 +6,7 @@
 #include<vector>
 #include "CostumMath.h"
 #include "Player.h"
+#include "Bomb.h"
 #include "Monster.h"
 #include "GridManager.h"
 #include "GameManager.h"
@@ -16,12 +17,19 @@ using namespace std;
 class Controller
 {
 private:
-	CostumMath controllerMath;
-
 	vector<Monster> mobVec;
 	vector<Player> playerVec;
 
+	Bomb bomb;
+
 public:
+	Controller();
+
+	static bool bombPlaced;
+
+	void setBombPlaced(bool);
+	bool getBombPlaced();
+
 	void setMobVec(vector<Monster> *);
 	void setPlayerVec(vector<Player> *);
 

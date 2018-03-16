@@ -807,8 +807,8 @@ void GameManager::setMobsInfo()
 		string mName = "Monster";
 		char mAvatar = 'M';
 
-		int randX = gameMath.getRandom(1, grid.getGridWidth());
-		int randY = gameMath.getRandom(1, grid.getGridHeight());
+		int randX = CostumMath::getRandom(1, grid.getGridWidth());
+		int randY = CostumMath::getRandom(1, grid.getGridHeight());
 
 		// Create a new Player with the given info and a random position
 		Monster m(mName, mAvatar);
@@ -898,19 +898,39 @@ void GameManager::playGame()
 
 void GameManager::gameOver()
 {
+	// Variables
+
 	int keyPressed = 0;
-	int finalScore = (turnsSurvived + Monster::killCount) * 2;
+	int counter = 0;
+	int killCount = 0;
+	int turnResult = turnsSurvived;
+
+	if (turnsSurvived % 2 != 0)
+	{
+		turnResult = turnsSurvived - 1;
+	}
+
+	double exponent = 2;
+	int finalScore = 0;
 	bool exitResults = false;
 
+	// Reset Player Vector for the next game
 	while (!playerVector.empty())
 	{
 		playerVector.pop_back();
 	}
 
+	// Reset Mob Vector for the next game
 	while (!mobVector.empty())
 	{
 		mobVector.pop_back();
+		counter++;
 	}
+
+	// Get how many monsters were killed
+	killCount = numOfMobs - counter;
+
+	finalScore = (static_cast<int>(CostumMath::getPower((turnResult), exponent)) + killCount);
 
 	Console::setCursorPosition(0, 0);
 	Console::setColour(Console::WHITE, Console::RED);
@@ -919,10 +939,8 @@ void GameManager::gameOver()
 	cout << endl << "Results:" << endl;
 	Console::setColour(Console::WHITE, Console::BLACK);
 	cout << "SCORE: " << finalScore << endl;
-	cout << "MONSTERS KILLED: " << Monster::killCount << endl;
+	cout << "MONSTERS KILLED: " << killCount << endl;
 	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
-
-	Monster::killCount = 0;
 
 	while (exitResults != true)
 	{

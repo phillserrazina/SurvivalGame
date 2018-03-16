@@ -13,7 +13,6 @@ int CostumMath::getRandom(int minValue, int maxValue)
 	return x;
 }
 
-
 // Vector Lenght
 // ||AB|| = squareRoot((Ax - Bx)^2 + (Ay - By)^2)
 float CostumMath::getVectorLenght(int xV1, int yV1, int xV2, int yV2)
@@ -24,4 +23,16 @@ float CostumMath::getVectorLenght(int xV1, int yV1, int xV2, int yV2)
 	float distance = sqrt((ABx * ABx) + (ABy * ABy));
 
 	return distance;
+}
+
+double CostumMath::getPower(double base, int exponent)
+{
+	double result = 1;
+
+	for (int i = 0; i < exponent; i++)
+	{
+		result = result * base;
+	}
+
+	return result;
 }

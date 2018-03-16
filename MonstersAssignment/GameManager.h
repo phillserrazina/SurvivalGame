@@ -31,8 +31,6 @@ private:
 	vector<Player> playerVector;
 	vector<Monster> mobVector;
 
-	CostumMath gameMath;
-
 public:
 	GameManager();
 

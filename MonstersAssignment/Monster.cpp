@@ -1,7 +1,5 @@
 #include "Monster.h"
 
-int Monster::killCount = 0;
-
 Monster::Monster(std::string s, char c) : Character(s, c)
 {
 	state = ROAMING;
@@ -10,6 +8,8 @@ Monster::Monster(std::string s, char c) : Character(s, c)
 
 	xPos = 1;
 	yPos = 1;
+
+	health = 1;
 }
 
 void Monster::setState(State s)
@@ -52,6 +52,16 @@ int Monster::getChasingCooldown()
 	return chasingCooldown;
 }
 
+void Monster::setHealth(int i)
+{
+	health = i;
+}
+
+int Monster::getHealth()
+{
+	return health;
+}
+
 void Monster::setCanMove(bool b)
 {
 	canMove = b;
@@ -64,5 +74,5 @@ bool Monster::getCanMove()
 
 Monster::~Monster()
 {
-	killCount++;
+
 }

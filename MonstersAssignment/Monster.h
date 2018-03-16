@@ -10,8 +10,6 @@ class Monster : public Character
 public:
 	Monster(std::string, char);
 
-	static int killCount;
-
 	enum State
 	{
 		ROAMING,
@@ -30,6 +28,9 @@ public:
 	void setChasingCooldown(int);
 	int getChasingCooldown();
 
+	void setHealth(int);
+	int getHealth();
+
 	void setCanMove(bool);
 	bool getCanMove();
 
@@ -41,6 +42,7 @@ private:
 	int visionRange;
 	int chasingCounter;
 	int chasingCooldown;
+	int health;
 
 	bool canMove;
 };
