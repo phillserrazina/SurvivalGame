@@ -1,6 +1,6 @@
 #include "Monster.h"
 
-int Monster::kill = 0;
+char Monster::monsterAvatar = 'M';
 
 Monster::Monster(std::string s, char c) : Character(s, c)
 {
@@ -76,5 +76,5 @@ bool Monster::getDead()
 
 Monster::~Monster()
 {
-	kill++;
+	
 }

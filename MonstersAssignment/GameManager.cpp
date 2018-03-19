@@ -131,11 +131,6 @@ void GameManager::gridOptions()
 					Console::setCursorPosition(0, 0);
 
 					Console::pause("That value is too small! Please give me a number bettwen 1 and 100");
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
 				else if (newValue > 100)
 				{
@@ -143,21 +138,18 @@ void GameManager::gridOptions()
 					Console::setCursorPosition(0, 0);
 
 					Console::pause("That value is too big! Please give me a number bettwen 1 and 100");
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
 				else
 				{
 					gridWidth = newValue;
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				gridOptions();
+
 				break;
 
 				// If an arrow is not pressed, nothing happens
@@ -225,11 +217,6 @@ void GameManager::gridOptions()
 					Console::setCursorPosition(0, 0);
 
 					Console::pause("That value is too small! Please give me a number bettwen 1 and 50");
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
 				else if (newValue > 25)
 				{
@@ -237,21 +224,18 @@ void GameManager::gridOptions()
 					Console::setCursorPosition(0, 0);
 
 					Console::pause("That value is too big! Please give me a number bettwen 1 and 25");
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
 				else
 				{
 					gridHeight = newValue;
-
-					Console::clear();
-					Console::setCursorPosition(0, 0);
-
-					gridOptions();
 				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				gridOptions();
+
 				break;
 
 				// If an arrow is not pressed, nothing happens
@@ -285,9 +269,9 @@ void GameManager::gridOptions()
 				// Set colours to default
 				Console::setCursorPosition(5, 0);
 				cout << "                   ";
-				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setColour(Console::YELLOW, Console::BLACK);
 				Console::setCursorPosition(5, 0);
-				cout << "Back" << gridWidth;
+				cout << "Back";
 
 				break;
 
@@ -308,16 +292,436 @@ void GameManager::gridOptions()
 	}
 }
 
-// TODO:
 void GameManager::playerOptions()
 {
+	// Variables
 
+	int keyPressed = 0;
+
+	string newName;
+	char newAvatar;
+
+	bool nameSelected = true;
+	bool avatarSelected = false;
+	bool backSelected = false;
+
+	bool enterPressed = false;
+
+	// Menu Display
+
+	Console::setColour(Console::AQUA, Console::BLACK);
+	cout << "PLAYER OPTIONS" << endl;
+	Console::setColour(Console::WHITE, Console::BLACK);
+	cout << endl << "Player Name: " << Player::playerName << endl;
+	cout << "Player Avatar: " << Player::playerAvatar << endl;
+	Console::setColour(Console::YELLOW, Console::BLACK);
+	cout << endl << "Back";
+
+	while (enterPressed != true)
+	{
+		// While "Player Name" is selected
+		if (nameSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(2, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(2, 0);
+			cout << "Player Name:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << Player::playerName;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				nameSelected = false;
+				avatarSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(2, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(2, 0);
+				cout << "Player Name: " << Player::playerName;
+
+				break;
+
+				// Enter
+			case (13):
+				Console::setCursorPosition(2, 13);
+				cout << "         ";
+				Console::setCursorPosition(2, 13);
+				getline(cin, newName);
+
+				if (newName.length() > 20)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That is quite a big name! Please choose a shorter one.");
+				}
+				else if (newName.length() < 1)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("Please enter a name!");
+				}
+				else
+				{
+					Player::playerName = newName;
+				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				playerOptions();
+
+				break;
+
+			// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Player Avatar" is selected
+		if (avatarSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(3, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(3, 0);
+			cout << "Player Avatar:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << Player::playerAvatar;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				avatarSelected = false;
+				backSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(3, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(3, 0);
+				cout << "Player Avatar: " << Player::playerAvatar;
+
+				break;
+
+				// Up Arrow
+			case (72):
+				avatarSelected = false;
+				nameSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(3, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(3, 0);
+				cout << "Player Avatar: " << Player::playerAvatar;
+
+				break;
+
+			// Enter
+			case (13):
+				Console::setCursorPosition(3, 15);
+				cout << "      ";
+				Console::setCursorPosition(3, 15);
+				cin >> newAvatar;
+
+				Player::playerAvatar = newAvatar;
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				playerOptions();
+				
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Back" is selected
+		if (backSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(5, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(5, 0);
+			cout << "Back";
+			Console::setColour(Console::WHITE, Console::BLACK);
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Up Arrow
+			case (72):
+				backSelected = false;
+				avatarSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(5, 0);
+				cout << "                   ";
+				Console::setColour(Console::YELLOW, Console::BLACK);
+				Console::setCursorPosition(5, 0);
+				cout << "Back";
+
+				break;
+
+				// Enter
+			case (13):
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				settingsMenu();
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+	}
 }
 
-// TODO:
 void GameManager::monsterOptions()
 {
+	// Variables
 
+	int keyPressed = 0;
+
+	int newNumOfMobs;
+	char newAvatar;
+
+	bool numOfMobsSelected = true;
+	bool avatarSelected = false;
+	bool backSelected = false;
+
+	bool enterPressed = false;
+
+	// Menu Display
+
+	Console::setColour(Console::AQUA, Console::BLACK);
+	cout << "MONSTER OPTIONS" << endl;
+	Console::setColour(Console::WHITE, Console::BLACK);
+	cout << endl << "Number Of Monsters: " << numOfMobs << endl;
+	cout << "Monster Avatar: " << Monster::monsterAvatar << endl;
+	Console::setColour(Console::YELLOW, Console::BLACK);
+	cout << endl << "Back";
+
+	while (enterPressed != true)
+	{
+		// While "Player Name" is selected
+		if (numOfMobsSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(2, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(2, 0);
+			cout << "Number Of Monsters:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << numOfMobs;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				numOfMobsSelected = false;
+				avatarSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(2, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(2, 0);
+				cout << "Number Of Monsters: " << numOfMobs;
+
+				break;
+
+				// Enter
+			case (13):
+				Console::setCursorPosition(2, 20);
+				cout << "         ";
+				Console::setCursorPosition(2, 20);
+				cin >> newNumOfMobs;
+
+				if (newNumOfMobs > 35)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That is quite a big number! Please choose a shorter one.");
+				}
+				else if (newNumOfMobs < 1)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("There has to be at least one monster!");
+				}
+				else
+				{
+					numOfMobs = newNumOfMobs;
+				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				monsterOptions();
+
+				break;
+
+			// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Player Avatar" is selected
+		if (avatarSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(3, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(3, 0);
+			cout << "Monster Avatar:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << Monster::monsterAvatar;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				avatarSelected = false;
+				backSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(3, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(3, 0);
+				cout << "Monster Avatar: " << Monster::monsterAvatar;
+
+				break;
+
+				// Up Arrow
+			case (72):
+				avatarSelected = false;
+				numOfMobsSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(3, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(3, 0);
+				cout << "Monster Avatar: " << Monster::monsterAvatar;
+
+				break;
+
+			// Enter
+			case (13):
+				Console::setCursorPosition(3, 16);
+				cout << "      ";
+				Console::setCursorPosition(3, 16);
+				cin >> newAvatar;
+
+				Monster::monsterAvatar = newAvatar;
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				monsterOptions();
+
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Back" is selected
+		if (backSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(5, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(5, 0);
+			cout << "Back";
+			Console::setColour(Console::WHITE, Console::BLACK);
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Up Arrow
+			case (72):
+				backSelected = false;
+				avatarSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(5, 0);
+				cout << "                   ";
+				Console::setColour(Console::YELLOW, Console::BLACK);
+				Console::setCursorPosition(5, 0);
+				cout << "Back";
+
+				break;
+
+				// Enter
+			case (13):
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				settingsMenu();
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+	}
 }
 
 void GameManager::settingsMenu()
@@ -380,6 +784,7 @@ void GameManager::settingsMenu()
 			case (13):
 				Console::clear();
 				Console::setCursorPosition(0, 0);
+				enterPressed = true;
 
 				gridOptions();
 				break;
@@ -439,7 +844,7 @@ void GameManager::settingsMenu()
 				Console::setCursorPosition(0, 0);
 				enterPressed = true;
 
-				// Player Options Menu
+				playerOptions();
 				break;
 
 				// If an arrow is not pressed, nothing happens
@@ -491,6 +896,14 @@ void GameManager::settingsMenu()
 
 				break;
 
+				// Enter
+			case (13):
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				monsterOptions();
+				break;
 			// If an arrow is not pressed, nothing happens
 			default:
 				break;
@@ -717,6 +1130,7 @@ void GameManager::mainMenu()
 			case (13):
 				Console::clear();
 				Console::setCursorPosition(0, 0);
+				enterPressed = true;
 
 				settingsMenu();
 				break;
@@ -783,14 +1197,8 @@ void GameManager::setPlayersInfo()
 		int randX = math.getRandom(1, grid.getGridWidth());
 		int randY = math.getRandom(1, grid.getGridHeight());
 
-		// Ask the user for the Player's name and avatar
-		cout << "What is the Player's name?" << endl;
-		cin >> pName;
-		cout << endl << "What is the Player's avatar?" << endl;
-		cin >> pAvatar;
-
 		// Create a new Player with the given info and a random position
-		Player p(pName, pAvatar);
+		Player p;
 		p.setX(randX);
 		p.setY(randY);
 
@@ -805,7 +1213,7 @@ void GameManager::setMobsInfo()
 	{
 		// Variables
 		string mName = "Monster";
-		char mAvatar = 'M';
+		char mAvatar = Monster::monsterAvatar;
 
 		int randX = CostumMath::getRandom(1, grid.getGridWidth());
 		int randY = CostumMath::getRandom(1, grid.getGridHeight());
@@ -875,6 +1283,7 @@ void GameManager::playGame()
 			// Move the monsters
 			for (int j = 0; j < controller.mobVector.size(); j++)
 			{
+				// If the monster is alive
 				if (controller.mobVector[j].getDead() != true)
 				{
 					controller.moveMob(controller.mobVector[j], controller.playerVector[i], grid);
@@ -894,6 +1303,8 @@ void GameManager::playGame()
 						controller.getBomb().boomBomb(controller.mobVector, controller.playerVector[i]);
 					}
 				}
+
+				// If the monster is dead
 				else if(controller.mobVector[j].getDead() == true)
 				{
 					Console::setCursorPosition(controller.mobVector[j].getY(), controller.mobVector[j].getX());
@@ -957,6 +1368,10 @@ void GameManager::gameOver()
 	cout << "SCORE: " << finalScore << endl;
 	cout << "MONSTERS KILLED: " << killCount << endl;
 	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
+
+	// Reset stats for the next game
+	turnsSurvived = 0;
+	finalScore = 0;
 
 	while (exitResults != true)
 	{

@@ -9,7 +9,10 @@ private:
 	bool inRange;
 
 public:
-	Player(std::string, char);
+	Player();
+
+	static std::string playerName;
+	static char playerAvatar;
 };
 
 #endif // !PLAYER_H

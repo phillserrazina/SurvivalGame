@@ -34,7 +34,7 @@ public:
 	void setDead(bool);
 	bool getDead();
 
-	static int kill;
+	static char monsterAvatar;
 
 	~Monster();
 
