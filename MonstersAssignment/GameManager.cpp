@@ -12,6 +12,7 @@ GameManager::GameManager()
 
 	numOfPlayers = 1;
 	numOfMobs = 10;
+	numOfBombs = 3;
 }
 
 void GameManager::setVisualSettings()
@@ -1228,6 +1229,25 @@ void GameManager::setMobsInfo()
 	}
 }
 
+void GameManager::dropBombs()
+{
+	for(int i = 0; i < numOfBombs; i++)
+	{
+		// Variables
+
+		int randX = CostumMath::getRandom(1, grid.getGridWidth());
+		int randY = CostumMath::getRandom(1, grid.getGridHeight());
+
+		// Create a new Player with the given info and a random position
+		PickBomb pb;
+		pb.setX(randX);
+		pb.setY(randY);
+
+		// Push the new player into the Player Vector
+		bombVector.push_back(pb);
+	}
+}
+
 void GameManager::prepareGame()
 {
 	// Set grid info beforehand to make Player and Monster 
@@ -1246,10 +1266,22 @@ void GameManager::prepareGame()
 	setMobsInfo();
 	Console::clear();
 
+	// Set up Pickable Bombs
+	dropBombs();
+	Console::clear();
+
 	// Now that all the calculations are made, draw the grid
 	grid.drawGrid();
 
-	// After the grid, draw the monsters
+	// Now, let's put pickable bombs in the field
+	for (int i = 0; i < bombVector.size(); i++)
+	{
+		Console::setColour(Console::WHITE, Console::BLACK);
+		Console::setCursorPosition(bombVector[i].getY(), bombVector[i].getX());
+		cout << bombVector[i].getAvatar();
+	}
+
+	// After the grid and bombs, draw the monsters
 	for (int i = 0; i < controller.mobVector.size(); i++)
 	{
 		Console::setColour(Console::GREEN, Console::BLACK);
@@ -1275,10 +1307,22 @@ void GameManager::playGame()
 	// GAME LOOP
 	while (gameOver != true)
 	{
+		Console::setCursorPosition(grid.getGridHeight() + 2, 0);
+		Console::setColour(Console::WHITE, Console::BLACK);
+		cout << "Bombs: " << controller.getPlayerBombs();
+
 		// Move the Player
 		for (int i = 0; i < controller.playerVector.size(); i++)
 		{
 			controller.movePlayer(controller.playerVector[i], grid);
+
+			// Draw remaining bombs
+			for (int i = 0; i < bombVector.size(); i++)
+			{
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(bombVector[i].getY(), bombVector[i].getX());
+				cout << bombVector[i].getAvatar();
+			}
 
 			// Move the monsters
 			for (int j = 0; j < controller.mobVector.size(); j++)
@@ -1320,6 +1364,8 @@ void GameManager::playGame()
 				gameOver = true;
 			}
 		}
+		
+		
 	}
 }
 

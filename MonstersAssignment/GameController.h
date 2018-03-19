@@ -4,11 +4,11 @@
 #include<iostream>
 #include<conio.h>
 #include<vector>
+#include "console.h"
 #include "CostumMath.h"
+#include "GridManager.h"
 #include "Player.h"
 #include "Monster.h"
-#include "GridManager.h"
-#include "console.h"
 #include "Bomb.h"
 
 using namespace std;
@@ -17,6 +17,7 @@ class Controller
 {
 private:
 	Bomb bomb;
+	int playerBombs;
 
 public:
 	Controller();
@@ -25,6 +26,9 @@ public:
 	vector<Player> playerVector;
 
 	Bomb getBomb();
+
+	void setPlayerBombs(int);
+	int getPlayerBombs();
 
 	void movePlayer(Player &, Grid);
 

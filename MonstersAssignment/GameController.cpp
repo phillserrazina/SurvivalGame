@@ -2,12 +2,22 @@
 
 Controller::Controller()
 {
-
+	playerBombs = 0;
 }
 
 Bomb Controller::getBomb()
 {
 	return bomb;
+}
+
+void Controller::setPlayerBombs(int i)
+{
+	playerBombs = i;
+}
+
+int Controller::getPlayerBombs()
+{
+	return playerBombs;
 }
 
 /*
@@ -70,13 +80,20 @@ void Controller::movePlayer(Player &player, Grid grid)
 		break;
 
 	case 'b':
-		if (bomb.getBombPlaced() == false)
+		// If the player has any bombs and presses 'b', place one
+		if (playerBombs > 0)
 		{
-			bomb.setX(player.getX());
-			bomb.setY(player.getY());
-		}
+			if (bomb.getBombPlaced() == false)
+			{
+				bomb.setX(player.getX());
+				bomb.setY(player.getY());
+			}
 
-		bomb.setBombPlaced(true);
+			bomb.setBombPlaced(true);
+
+			playerBombs--;
+		}
+		
 		break;
 
 	// Detect Arrows

@@ -1,14 +1,8 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
-#include<iostream>
-#include<vector>
-#include<conio.h>
-#include "GridManager.h"
-#include "console.h"
-#include "Player.h"
-#include "Monster.h"
 #include "GameController.h"
+#include "PickableBomb.h"
 
 using namespace std;
 
@@ -20,6 +14,8 @@ private:
 	int numOfPlayers;
 	int numOfMobs;
 
+	int numOfBombs;
+
 	int gridWidth;
 	int gridHeight;
 
@@ -29,6 +25,8 @@ private:
 	Grid grid;
 
 	Controller controller;
+
+	vector<PickBomb> bombVector;
 
 public:
 	GameManager();
@@ -47,6 +45,7 @@ public:
 	// Character's Info Managers
 	void setPlayersInfo();
 	void setMobsInfo();
+	void dropBombs();
 
 	// Core Game Functions
 	void prepareGame();
