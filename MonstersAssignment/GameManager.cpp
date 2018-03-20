@@ -302,9 +302,11 @@ void GameManager::playerOptions()
 
 	string newName;
 	char newAvatar;
+	int newValue;
 
 	bool nameSelected = true;
 	bool avatarSelected = false;
+	bool bombSelected = false;
 	bool backSelected = false;
 
 	bool enterPressed = false;
@@ -316,6 +318,7 @@ void GameManager::playerOptions()
 	Console::setColour(Console::WHITE, Console::BLACK);
 	cout << endl << "Player Name: " << Player::playerName << endl;
 	cout << "Player Avatar: " << Player::playerAvatar << endl;
+	cout << "Starting Bombs: " << controller.getPlayerBombs() << endl;
 	Console::setColour(Console::YELLOW, Console::BLACK);
 	cout << endl << "Back";
 
@@ -414,7 +417,7 @@ void GameManager::playerOptions()
 				// Down Arrow
 			case (80):
 				avatarSelected = false;
-				backSelected = true;
+				bombSelected = true;
 
 				// Set colours to default
 				Console::setCursorPosition(3, 0);
@@ -462,14 +465,83 @@ void GameManager::playerOptions()
 			}
 		}
 
+		// While "Starting Bombs" is selected
+		if (bombSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(4, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(4, 0);
+			cout << "Starting Bombs:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << controller.getPlayerBombs();
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+			// Down Arrow
+			case (80):
+				bombSelected = false;
+				backSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(4, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(4, 0);
+				cout << "Starting Bombs: " << controller.getPlayerBombs();
+
+				break;
+
+			// Up Arrow
+			case (72):
+				bombSelected = false;
+				avatarSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(4, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(4, 0);
+				cout << "Starting Bombs: " << controller.getPlayerBombs();
+
+				break;
+
+				// Enter
+			case (13):
+				Console::setCursorPosition(4, 16);
+				cout << "      ";
+				Console::setCursorPosition(4, 16);
+				cin >> newValue;
+
+				controller.setPlayerBombs(newValue);
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				playerOptions();
+
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
 		// While "Back" is selected
 		if (backSelected == true)
 		{
 			// Highlight Selected Option
-			Console::setCursorPosition(5, 0);
+			Console::setCursorPosition(6, 0);
 			cout << "                   ";
 			Console::setColour(Console::BLACK, Console::RED);
-			Console::setCursorPosition(5, 0);
+			Console::setCursorPosition(6, 0);
 			cout << "Back";
 			Console::setColour(Console::WHITE, Console::BLACK);
 
@@ -482,13 +554,13 @@ void GameManager::playerOptions()
 				// Up Arrow
 			case (72):
 				backSelected = false;
-				avatarSelected = true;
+				bombSelected = true;
 
 				// Set colours to default
-				Console::setCursorPosition(5, 0);
+				Console::setCursorPosition(6, 0);
 				cout << "                   ";
 				Console::setColour(Console::YELLOW, Console::BLACK);
-				Console::setCursorPosition(5, 0);
+				Console::setCursorPosition(6, 0);
 				cout << "Back";
 
 				break;
