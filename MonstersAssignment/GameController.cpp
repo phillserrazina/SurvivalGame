@@ -5,9 +5,9 @@ Controller::Controller()
 	playerBombs = 0;
 }
 
-Bomb Controller::getBomb()
+Bomb& Controller::getBomb()
 {
-	return bomb;
+	return this->bomb;
 }
 
 void Controller::setPlayerBombs(int i)

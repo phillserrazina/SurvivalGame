@@ -13,6 +13,7 @@ GameManager::GameManager()
 	numOfPlayers = 1;
 	numOfMobs = 10;
 	numOfBombs = 3;
+	numOfManholes = 5;
 }
 
 void GameManager::setVisualSettings()
@@ -1017,6 +1018,7 @@ void GameManager::mainMenu()
 			case (13):
 				Console::clear();
 				Console::setCursorPosition(0, 0);
+				enterPressed = true;
 
 				gameLoop();
 				break;
@@ -1248,6 +1250,25 @@ void GameManager::dropBombs()
 	}
 }
 
+void GameManager::setManholes()
+{
+	for (int i = 0; i < numOfManholes; i++)
+	{
+		// Variables
+
+		int randX = CostumMath::getRandom(1, grid.getGridWidth());
+		int randY = CostumMath::getRandom(1, grid.getGridHeight());
+
+		// Create a new Player with the given info and a random position
+		Manhole mh;
+		mh.setX(randX);
+		mh.setY(randY);
+
+		// Push the new player into the Player Vector
+		holeVector.push_back(mh);
+	}
+}
+
 void GameManager::prepareGame()
 {
 	// Set grid info beforehand to make Player and Monster 
@@ -1260,18 +1281,25 @@ void GameManager::prepareGame()
 
 	// Set up Player's info
 	setPlayersInfo();
-	Console::clear();
 
 	// Set up Monster's info
 	setMobsInfo();
-	Console::clear();
 
 	// Set up Pickable Bombs
 	dropBombs();
-	Console::clear();
+
+	// Set up Manholes
+	setManholes();
 
 	// Now that all the calculations are made, draw the grid
 	grid.drawGrid();
+
+	for (int i = 0; i < holeVector.size(); i++)
+	{
+		Console::setColour(Console::WHITE, Console::BLACK);
+		Console::setCursorPosition(holeVector[i].getY(), holeVector[i].getX());
+		cout << holeVector[i].getAvatar();
+	}
 
 	// Now, let's put pickable bombs in the field
 	for (int i = 0; i < bombVector.size(); i++)
@@ -1316,12 +1344,24 @@ void GameManager::playGame()
 		{
 			controller.movePlayer(controller.playerVector[i], grid);
 
-			// Draw remaining bombs
-			for (int i = 0; i < bombVector.size(); i++)
+			// Bomb Pickup Handler
+			for (int j = 0; j < bombVector.size(); j++)
 			{
+				// Draw any existing bombs
 				Console::setColour(Console::WHITE, Console::BLACK);
-				Console::setCursorPosition(bombVector[i].getY(), bombVector[i].getX());
-				cout << bombVector[i].getAvatar();
+				Console::setCursorPosition(bombVector[j].getY(), bombVector[j].getX());
+				cout << bombVector[j].getAvatar();
+
+				// Check if the player touches any bomb
+				if (controller.playerVector[i].getX() == bombVector[j].getX() &&
+					controller.playerVector[i].getY() == bombVector[j].getY())
+				{
+					// If he does, delete the bomb
+					bombVector.erase(bombVector.begin() + j);
+
+					// And add it to the Player's inventory
+					controller.setPlayerBombs(controller.getPlayerBombs() + 1);
+				}
 			}
 
 			// Move the monsters
@@ -1346,6 +1386,19 @@ void GameManager::playGame()
 						controller.getBomb().setTimer(0);
 						controller.getBomb().boomBomb(controller.mobVector, controller.playerVector[i]);
 					}
+
+					// If the monster steps on a manhole
+					for (int k = 0; k < holeVector.size(); k++)
+					{
+						if ((controller.mobVector[j].getX() == holeVector[k].getX()) && 
+							(controller.mobVector[j].getY() == holeVector[k].getY()))
+						{
+							controller.mobVector[j].setDead(true);
+
+							holeVector.erase(holeVector.begin() + k);
+						}
+					}
+					
 				}
 
 				// If the monster is dead
@@ -1354,6 +1407,16 @@ void GameManager::playGame()
 					Console::setCursorPosition(controller.mobVector[j].getY(), controller.mobVector[j].getX());
 					cout << " ";
 					controller.mobVector.erase(controller.mobVector.begin() + j);
+				}
+			}
+
+			// If the player steps on a manhole
+			for (int j = 0; j < holeVector.size(); j++)
+			{
+				if ((controller.playerVector[i].getX() == holeVector[j].getX()) &&
+					(controller.playerVector[i].getY() == holeVector[j].getY()))
+				{
+					gameOver = true;
 				}
 			}
 
@@ -1400,6 +1463,18 @@ void GameManager::gameOver()
 		counter++;
 	}
 
+	// Reset Bomb Vector for the next game
+	while (!bombVector.empty())
+	{
+		bombVector.pop_back();
+	}
+
+	// Reset Hole Vector for the next game
+	while (!holeVector.empty())
+	{
+		holeVector.pop_back();
+	}
+
 	// Get how many monsters were killed
 	killCount = numOfMobs - counter;
 
@@ -1418,6 +1493,7 @@ void GameManager::gameOver()
 	// Reset stats for the next game
 	turnsSurvived = 0;
 	finalScore = 0;
+	controller.setPlayerBombs(0);
 
 	while (exitResults != true)
 	{

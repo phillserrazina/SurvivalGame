@@ -117,6 +117,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GridManager.cpp" />
+    <ClCompile Include="Manhole.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="PickableBomb.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GridManager.h" />
+    <ClInclude Include="Manhole.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="PickableBomb.h" />
     <ClInclude Include="Player.h" />

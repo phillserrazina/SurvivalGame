@@ -25,7 +25,7 @@ public:
 	vector<Monster> mobVector;
 	vector<Player> playerVector;
 
-	Bomb getBomb();
+	Bomb& getBomb();
 
 	void setPlayerBombs(int);
 	int getPlayerBombs();

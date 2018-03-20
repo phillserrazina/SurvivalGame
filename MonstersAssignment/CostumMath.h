@@ -9,7 +9,13 @@
 class CostumMath
 {
 private:
-	struct Vector
+	struct Point
+	{
+		int x;
+		int y;
+	};
+
+	struct MathVector
 	{
 		int x1;
 		int y1;
@@ -24,6 +30,7 @@ public:
 	static int getRandom(int, int);
 
 	static float getVectorLenght(int, int, int, int);
+	static float getVectorLenght(MathVector);
 
 	static double getPower(double, int);
 };

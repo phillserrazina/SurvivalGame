@@ -3,6 +3,7 @@
 
 #include "GameController.h"
 #include "PickableBomb.h"
+#include "Manhole.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ private:
 	int numOfMobs;
 
 	int numOfBombs;
+	int numOfManholes;
 
 	int gridWidth;
 	int gridHeight;
@@ -27,6 +29,7 @@ private:
 	Controller controller;
 
 	vector<PickBomb> bombVector;
+	vector<Manhole> holeVector;
 
 public:
 	GameManager();
@@ -46,6 +49,7 @@ public:
 	void setPlayersInfo();
 	void setMobsInfo();
 	void dropBombs();
+	void setManholes();
 
 	// Core Game Functions
 	void prepareGame();

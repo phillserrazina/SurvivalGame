@@ -74,7 +74,7 @@ void Bomb::boomBomb(std::vector<Monster> &mobs, Player player)
 	}
 
 	// If yes, explode the bomb
-	else
+	else if (timer < 50)
 	{
 		timer = 0;
 
@@ -96,11 +96,6 @@ void Bomb::boomBomb(std::vector<Monster> &mobs, Player player)
 					mobs[i].setDead(true);
 				}
 			}
-		}
-
-		if (playerDistance <= range)
-		{
-
 		}
 	}
 }

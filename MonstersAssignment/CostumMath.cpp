@@ -6,6 +6,7 @@ CostumMath::CostumMath()
 	rand();
 }
 
+// Get a Random number in between a set minimum and maximum value
 int CostumMath::getRandom(int minValue, int maxValue)
 {
 	int x = rand() % (maxValue - minValue) + minValue;
@@ -20,11 +21,23 @@ float CostumMath::getVectorLenght(int xV1, int yV1, int xV2, int yV2)
 	float ABx = xV2 - xV1;
 	float ABy = yV2 - yV1;
 
-	float distance = sqrt((ABx * ABx) + (ABy * ABy));
+	float lenght = sqrt((ABx * ABx) + (ABy * ABy));
 
-	return distance;
+	return lenght;
 }
 
+float CostumMath::getVectorLenght(MathVector v)
+{
+	float ABx = v.x1 - v.x2;
+	float ABy = v.y1 - v.y2;
+
+	float lenght = sqrt((ABx * ABx) + (ABy * ABy));
+
+	return lenght;
+}
+
+// Powers
+// base ^ exponent
 double CostumMath::getPower(double base, int exponent)
 {
 	double result = 1;
