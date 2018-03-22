@@ -16,6 +16,11 @@ GameManager::GameManager()
 	numOfManholes = 5;
 }
 
+/* 
+Function that prepares the visual settings of the console such as the
+window title, the window size and position and the colour of the initial
+text.
+*/
 void GameManager::setVisualSettings()
 {
 	Console::setWindowTitle("Console Monster Escape");		// Set Window Title
@@ -25,6 +30,10 @@ void GameManager::setVisualSettings()
 	Console::clear();
 }
 
+/*
+Function that displays the instructions menu and handles the input
+to return to the settings menu.
+*/
 void GameManager::instructionsMenu()
 {
 	// Variables
@@ -34,8 +43,24 @@ void GameManager::instructionsMenu()
 	bool enterPressed = false;
 
 	// Menu Display
-	cout << "**Instructions**" << endl;
-	Console::setCursorPosition(10, 0);
+	Console::setColour(Console::AQUA, Console::BLACK);
+	cout << "INSTRUCTIONS" << endl << endl;
+	Console::setColour(Console::WHITE, Console::BLACK);
+	cout << "The objective of this game is to survive as long as possible and kill as " << endl;
+	cout << "many monsters as you.                                                    " << endl;
+	cout << "To move, the player can press WASD or the arrow keys. The monsters won't " << endl;
+	cout << "move until the player chooses what they want to do.                      " << endl;
+	cout << "By default, the player will be represented by a '@' and the monsters will" << endl;
+	cout << "be represented by a 'M'. This can be changed in the settings, in Player  " << endl;
+	cout << "and Monster Options.                                                     " << endl;
+	cout << "To help the player, there will be bombs that can be picked up and planted" << endl;
+	cout << "by pressing B on the keyboard. Bombs will take 3 turns to explode.       " << endl;
+	cout << "There will also be traps where both monsters and players can fall in.    " << endl;
+	cout << "By default, pickable bombs are represented by a '+' and traps are        " << endl;
+	cout << "represented by a 'O'. These can also be changed in the setting, in grid  " << endl;
+	cout << "options.";
+
+	Console::setCursorPosition(16, 0);
 	Console::setColour(Console::BLACK, Console::RED);
 	cout << "Back";
 	Console::setColour(Console::WHITE, Console::BLACK);
@@ -62,6 +87,10 @@ void GameManager::instructionsMenu()
 	}
 }
 
+/*
+Function that displays the Grid Options Menu and handles the input
+to select the various options.
+*/
 void GameManager::gridOptions()
 {
 	// Variables
@@ -72,6 +101,8 @@ void GameManager::gridOptions()
 
 	bool widthSelected = true;
 	bool heightSelected = false;
+	bool manholeSelected = false;
+	bool bombSelected = false;
 	bool backSelected = false;
 
 	bool enterPressed = false;
@@ -83,6 +114,8 @@ void GameManager::gridOptions()
 	Console::setColour(Console::WHITE, Console::BLACK);
 	cout << endl << "Grid Width: " << gridWidth << endl;
 	cout << "Grid Height: " << gridHeight << endl;
+	cout << "Number of Traps: " << numOfManholes << endl;
+	cout << "Number of Bombs: " << numOfBombs << endl;
 	Console::setColour(Console::YELLOW, Console::BLACK);
 	cout << endl << "Back";
 
@@ -127,19 +160,19 @@ void GameManager::gridOptions()
 				Console::setCursorPosition(2, 12);
 				cin >> newValue;
 
-				if (newValue < 1)
+				if (newValue < 20)
 				{
 					Console::clear();
 					Console::setCursorPosition(0, 0);
 
-					Console::pause("That value is too small! Please give me a number bettwen 1 and 100");
+					Console::pause("That value is too small! Please give me a number between 20 and 100");
 				}
 				else if (newValue > 100)
 				{
 					Console::clear();
 					Console::setCursorPosition(0, 0);
 
-					Console::pause("That value is too big! Please give me a number bettwen 1 and 100");
+					Console::pause("That value is too big! Please give me a number between 20 and 100");
 				}
 				else
 				{
@@ -181,7 +214,7 @@ void GameManager::gridOptions()
 			// Down Arrow
 			case (80):
 				heightSelected = false;
-				backSelected = true;
+				manholeSelected = true;
 
 				// Set colours to default
 				Console::setCursorPosition(3, 0);
@@ -213,19 +246,19 @@ void GameManager::gridOptions()
 				Console::setCursorPosition(3, 13);
 				cin >> newValue;
 
-				if (newValue < 1)
+				if (newValue < 10)
 				{
 					Console::clear();
 					Console::setCursorPosition(0, 0);
 
-					Console::pause("That value is too small! Please give me a number bettwen 1 and 50");
+					Console::pause("That value is too small! Please give me a number between 10 and 25");
 				}
 				else if (newValue > 25)
 				{
 					Console::clear();
 					Console::setCursorPosition(0, 0);
 
-					Console::pause("That value is too big! Please give me a number bettwen 1 and 25");
+					Console::pause("That value is too big! Please give me a number between 10 and 25");
 				}
 				else
 				{
@@ -246,14 +279,186 @@ void GameManager::gridOptions()
 			}
 		}
 
-		// While "Back" is selected
-		if (backSelected == true)
+		// While "Number of Traps" is selected
+		if (manholeSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(4, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(4, 0);
+			cout << "Number of Traps:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << numOfManholes;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				manholeSelected = false;
+				bombSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(4, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(4, 0);
+				cout << "Number of Traps: " << numOfManholes;
+
+				break;
+
+				// Up Arrow
+			case (72):
+				manholeSelected = false;
+				heightSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(4, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(4, 0);
+				cout << "Number of Traps: " << numOfManholes;
+
+				break;
+
+				// Enter
+			case (13):
+				Console::setCursorPosition(4, 17);
+				cout << "      ";
+				Console::setCursorPosition(4, 17);
+				cin >> newValue;
+
+				if (newValue > 15)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That value is too big! Please give me a number between 1 and 15");
+				}
+				else if (newValue < 1)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That value is too small! Please give me a number between 1 and 15");
+				}
+				else
+				{
+					numOfManholes = newValue;
+				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				gridOptions();
+
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Number of Traps" is selected
+		if (bombSelected == true)
 		{
 			// Highlight Selected Option
 			Console::setCursorPosition(5, 0);
 			cout << "                   ";
 			Console::setColour(Console::BLACK, Console::RED);
 			Console::setCursorPosition(5, 0);
+			cout << "Number of Bombs:";
+			Console::setColour(Console::WHITE, Console::BLACK);
+			cout << " " << numOfBombs;
+
+			// Wait for input
+			keyPressed = _getch();
+
+			// Input Response
+			switch (keyPressed)
+			{
+				// Down Arrow
+			case (80):
+				bombSelected = false;
+				backSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(5, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(5, 0);
+				cout << "Number of Bombs: " << numOfBombs;
+
+				break;
+
+				// Up Arrow
+			case (72):
+				bombSelected = false;
+				manholeSelected = true;
+
+				// Set colours to default
+				Console::setCursorPosition(5, 0);
+				cout << "                   ";
+				Console::setColour(Console::WHITE, Console::BLACK);
+				Console::setCursorPosition(5, 0);
+				cout << "Number of Bombs: " << numOfBombs;
+
+				break;
+
+				// Enter
+			case (13):
+				Console::setCursorPosition(5, 17);
+				cout << "      ";
+				Console::setCursorPosition(5, 17);
+				cin >> newValue;
+
+				if (newValue > 10)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That value is too big! Please give me a number between 1 and 10");
+				}
+				else if (newValue < 1)
+				{
+					Console::clear();
+					Console::setCursorPosition(0, 0);
+
+					Console::pause("That value is too small! Please give me a number between 1 and 10");
+				}
+				else
+				{
+					numOfBombs = newValue;
+				}
+
+				Console::clear();
+				Console::setCursorPosition(0, 0);
+				enterPressed = true;
+
+				gridOptions();
+
+				break;
+
+				// If an arrow is not pressed, nothing happens
+			default:
+				break;
+			}
+		}
+
+		// While "Back" is selected
+		if (backSelected == true)
+		{
+			// Highlight Selected Option
+			Console::setCursorPosition(7, 0);
+			cout << "                   ";
+			Console::setColour(Console::BLACK, Console::RED);
+			Console::setCursorPosition(7, 0);
 			cout << "Back";
 			Console::setColour(Console::WHITE, Console::BLACK);
 
@@ -266,13 +471,13 @@ void GameManager::gridOptions()
 			// Up Arrow
 			case (72):
 				backSelected = false;
-				heightSelected = true;
+				bombSelected = true;
 
 				// Set colours to default
-				Console::setCursorPosition(5, 0);
+				Console::setCursorPosition(7, 0);
 				cout << "                   ";
 				Console::setColour(Console::YELLOW, Console::BLACK);
-				Console::setCursorPosition(5, 0);
+				Console::setCursorPosition(7, 0);
 				cout << "Back";
 
 				break;
@@ -294,6 +499,10 @@ void GameManager::gridOptions()
 	}
 }
 
+/*
+Function that displays the Player Options Menu and handles the input
+to select the various options.
+*/
 void GameManager::playerOptions()
 {
 	// Variables
@@ -582,6 +791,10 @@ void GameManager::playerOptions()
 	}
 }
 
+/*
+Function that displays the Monster Options Menu and handles the input
+to select the various options.
+*/
 void GameManager::monsterOptions()
 {
 	// Variables
@@ -798,6 +1011,10 @@ void GameManager::monsterOptions()
 	}
 }
 
+/*
+Function that displays the Settings Menu and handles the input
+to select the various options.
+*/
 void GameManager::settingsMenu()
 {
 	// Variables
@@ -1031,6 +1248,10 @@ void GameManager::settingsMenu()
 	}
 }
 
+/*
+Function that displays the Main Menu and handles the input
+to select the various options.
+*/
 void GameManager::mainMenu()
 {
 	// Variables
@@ -1259,6 +1480,11 @@ void GameManager::mainMenu()
 	}
 }
 
+/*
+Function that prepares the player for the game with the information
+given such as the Player's name and avatar. It also gives the player
+a random position to start the game in.
+*/
 void GameManager::setPlayersInfo()
 {
 	for (int i = 1; i <= numOfPlayers; i++)
@@ -1282,6 +1508,11 @@ void GameManager::setPlayersInfo()
 	}
 }
 
+/*
+Function that prepares the monsters for the game with the information
+given such as the Monsters' name and avatar. It also gives the monsters
+a random position to start the game in.
+*/
 void GameManager::setMobsInfo()
 {
 	for (int i = 1; i <= numOfMobs; i++)
@@ -1303,6 +1534,10 @@ void GameManager::setMobsInfo()
 	}
 }
 
+/*
+Function that prepares the pickable bombs for the game by giving them
+a random position.
+*/
 void GameManager::dropBombs()
 {
 	for(int i = 0; i < numOfBombs; i++)
@@ -1322,6 +1557,10 @@ void GameManager::dropBombs()
 	}
 }
 
+/*
+Function that prepares the traps for the game by giving them
+a random position.
+*/
 void GameManager::setManholes()
 {
 	for (int i = 0; i < numOfManholes; i++)
@@ -1341,6 +1580,10 @@ void GameManager::setManholes()
 	}
 }
 
+/*
+Function that uses all of the previous functions to set up the information
+that the game needs. It also displays the grid and all the initial objects.
+*/
 void GameManager::prepareGame()
 {
 	// Set grid info beforehand to make Player and Monster 
@@ -1398,6 +1641,9 @@ void GameManager::prepareGame()
 	}
 }
 
+/*
+Function that handles the core of the game.
+*/
 void GameManager::playGame()
 {
 	// Variables
@@ -1407,13 +1653,14 @@ void GameManager::playGame()
 	// GAME LOOP
 	while (gameOver != true)
 	{
-		Console::setCursorPosition(grid.getGridHeight() + 2, 0);
+		// Display how many bombs the players has
 		Console::setColour(Console::WHITE, Console::BLACK);
+		Console::setCursorPosition(grid.getGridHeight() + 2, 0);
 		cout << "Bombs: " << controller.getPlayerBombs();
 
-		// Move the Player
 		for (int i = 0; i < controller.playerVector.size(); i++)
 		{
+			// Move the Player
 			controller.movePlayer(controller.playerVector[i], grid);
 
 			// Bomb Pickup Handler
@@ -1436,18 +1683,19 @@ void GameManager::playGame()
 				}
 			}
 
-			// Move the monsters
 			for (int j = 0; j < controller.mobVector.size(); j++)
 			{
 				// If the monster is alive
 				if (controller.mobVector[j].getDead() != true)
 				{
+					// Move it
 					controller.moveMob(controller.mobVector[j], controller.playerVector[i], grid);
 
 					// If the monster touches the player
 					if ((controller.mobVector[j].getX() == controller.playerVector[i].getX()) &&
 						((controller.mobVector[j].getY() == controller.playerVector[i].getY())))
 					{
+						// The player dies, trigger the end of the game
 						gameOver = true;
 					}
 
@@ -1455,6 +1703,7 @@ void GameManager::playGame()
 					if ((controller.mobVector[j].getX() == controller.getBomb().getX()) &&
 						((controller.mobVector[j].getY() == controller.getBomb().getY())))
 					{
+						// Explode the bomb
 						controller.getBomb().setTimer(0);
 						controller.getBomb().boomBomb(controller.mobVector, controller.playerVector[i]);
 					}
@@ -1465,8 +1714,10 @@ void GameManager::playGame()
 						if ((controller.mobVector[j].getX() == holeVector[k].getX()) && 
 							(controller.mobVector[j].getY() == holeVector[k].getY()))
 						{
+							// Kill the monster
 							controller.mobVector[j].setDead(true);
 
+							// Get rid of the manhole
 							holeVector.erase(holeVector.begin() + k);
 						}
 					}
@@ -1476,6 +1727,7 @@ void GameManager::playGame()
 				// If the monster is dead
 				else if(controller.mobVector[j].getDead() == true)
 				{
+					// Delete it from the monster vector
 					Console::setCursorPosition(controller.mobVector[j].getY(), controller.mobVector[j].getX());
 					cout << " ";
 					controller.mobVector.erase(controller.mobVector.begin() + j);
@@ -1492,8 +1744,10 @@ void GameManager::playGame()
 				}
 			}
 
+			// Increment the "Survived Turns" counter
 			turnsSurvived++;
 
+			// If all the monsters are dead, the player wins, trigger the end of the game
 			if (controller.mobVector.empty())
 			{
 				gameOver = true;
@@ -1504,6 +1758,9 @@ void GameManager::playGame()
 	}
 }
 
+/*
+Function that handles the Game Over screen.
+*/
 void GameManager::gameOver()
 {
 	// Variables
@@ -1550,7 +1807,7 @@ void GameManager::gameOver()
 	// Get how many monsters were killed
 	killCount = numOfMobs - counter;
 
-	finalScore = (static_cast<int>(CostumMath::getPower(base, (turnResult / 2)) + killCount));
+	finalScore = (static_cast<int>(turnsSurvived / 3) + killCount);
 
 	Console::setCursorPosition(0, 0);
 	Console::setColour(Console::WHITE, Console::RED);
@@ -1587,6 +1844,10 @@ void GameManager::gameOver()
 	}
 }
 
+/*
+Function that compacts the "prepareGame", "playGame" and "gameOver"
+functions.
+*/
 void GameManager::gameLoop()
 {
 	prepareGame();

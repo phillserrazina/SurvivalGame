@@ -6,23 +6,25 @@
 #include<ctime>
 #include<math.h>
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+struct MathVector
+{
+	int x1;
+	int y1;
+
+	int x2;
+	int y2;
+};
+
 class CostumMath
 {
 private:
-	struct Point
-	{
-		int x;
-		int y;
-	};
-
-	struct MathVector
-	{
-		int x1;
-		int y1;
-
-		int x2;
-		int y2;
-	};
+	
 
 public:
 	CostumMath();

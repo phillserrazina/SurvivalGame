@@ -2,7 +2,6 @@
 #define BOMB_H
 
 #include<vector>
-#include "Character.h"
 #include "Player.h"
 #include "Monster.h"
 #include "CostumMath.h"

@@ -50,6 +50,9 @@ float Bomb::getRange()
 	return range;
 }
 
+/*
+Function that handles the timer and what happens when it reaches 0.
+*/
 void Bomb::boomBomb(std::vector<Monster> &mobs, Player player)
 {
 	float playerDistance = CostumMath::getVectorLenght(xPos, yPos, player.getX(), player.getY());

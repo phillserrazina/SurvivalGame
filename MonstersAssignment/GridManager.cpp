@@ -49,6 +49,9 @@ int Grid::getGridStartY()
 	return startingY;
 }
 
+/*
+Function that draws the grid on the screen with the provided measures.
+*/
 void Grid::drawGrid()
 {
 	// TOP EDGE

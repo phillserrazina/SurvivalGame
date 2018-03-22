@@ -32,10 +32,10 @@ public:
 
 	void movePlayer(Player &, Grid);
 
-	void mobRoaming(Monster &, Player &, Grid grid);
+	void mobRoaming(Monster &, Player &, Grid);
 	void mobChasing(Monster &, Player &);
 	
-	void moveMob(Monster &, Player &, Grid grid);
+	void moveMob(Monster &, Player &, Grid);
 };
 
 #endif // !GAME_CONTROLLER_H
