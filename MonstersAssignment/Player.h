@@ -5,9 +5,6 @@
 
 class Player : public Character
 {
-private:
-	bool inRange;
-
 public:
 	Player();
 

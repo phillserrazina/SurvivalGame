@@ -14,6 +14,9 @@ GameManager::GameManager()
 	numOfMobs = 10;
 	numOfBombs = 3;
 	numOfManholes = 5;
+
+	gameWon = false;
+	gameLost = false;
 }
 
 /* 
@@ -1697,6 +1700,9 @@ void GameManager::playGame()
 					{
 						// The player dies, trigger the end of the game
 						gameOver = true;
+						gameLost = true;
+
+						deathReason = "got caught by a nasty Monster!";
 					}
 
 					// If the monster touches the bomb
@@ -1741,6 +1747,9 @@ void GameManager::playGame()
 					(controller.playerVector[i].getY() == holeVector[j].getY()))
 				{
 					gameOver = true;
+					gameLost = true;
+
+					deathReason = "fell on a Trap!";
 				}
 			}
 
@@ -1751,10 +1760,9 @@ void GameManager::playGame()
 			if (controller.mobVector.empty())
 			{
 				gameOver = true;
+				gameWon = true;
 			}
 		}
-		
-		
 	}
 }
 
@@ -1779,11 +1787,7 @@ void GameManager::gameOver()
 	int finalScore = 0;
 	bool exitResults = false;
 
-	// Reset Player Vector for the next game
-	while (!controller.playerVector.empty())
-	{
-		controller.playerVector.pop_back();
-	}
+	fstream logFile("gameLog.txt", ios::app);
 
 	// Reset Mob Vector for the next game
 	while (!controller.mobVector.empty())
@@ -1792,20 +1796,13 @@ void GameManager::gameOver()
 		counter++;
 	}
 
-	// Reset Bomb Vector for the next game
-	while (!bombVector.empty())
-	{
-		bombVector.pop_back();
-	}
-
-	// Reset Hole Vector for the next game
-	while (!holeVector.empty())
-	{
-		holeVector.pop_back();
-	}
-
 	// Get how many monsters were killed
 	killCount = numOfMobs - counter;
+
+	if (deathReason == "fell on a Trap!")
+	{
+		killCount -= 1;
+	}
 
 	finalScore = (static_cast<int>(turnsSurvived / 3) + killCount);
 
@@ -1819,10 +1816,33 @@ void GameManager::gameOver()
 	cout << "MONSTERS KILLED: " << killCount << endl;
 	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
 
+	// Register results in a log file
+	logFile << controller.playerVector[0].getName() << " survived for " << turnsSurvived << " turns but eventually " << deathReason << "... Final Score: " << finalScore << endl;
+
 	// Reset stats for the next game
 	turnsSurvived = 0;
 	finalScore = 0;
+	gameWon = false;
+	gameLost = false;
 	controller.setPlayerBombs(0);
+
+	// Reset Player Vector for the next game
+	while (!controller.playerVector.empty())
+	{
+		controller.playerVector.pop_back();
+	}
+
+	// Reset Bomb Vector for the next game
+	while (!bombVector.empty())
+	{
+		bombVector.pop_back();
+	}
+
+	// Reset Hole Vector for the next game
+	while (!holeVector.empty())
+	{
+		holeVector.pop_back();
+	}
 
 	while (exitResults != true)
 	{
@@ -1845,7 +1865,101 @@ void GameManager::gameOver()
 }
 
 /*
-Function that compacts the "prepareGame", "playGame" and "gameOver"
+Function that handles the Win Screen.
+*/
+void GameManager::winGame()
+{
+	// Variables
+
+	int keyPressed = 0;
+	int counter = 0;
+	int killCount = 0;
+	int winBonus = 50;
+	int turnResult = turnsSurvived;
+
+	if (turnsSurvived % 2 != 0)
+	{
+		turnResult = turnsSurvived - 1;
+	}
+
+	double base = 1.05;
+	int finalScore = 0;
+	bool exitResults = false;
+
+	fstream logFile("gameLog.txt", ios::app);
+
+	// Reset Mob Vector for the next game
+	while (!controller.mobVector.empty())
+	{
+		controller.mobVector.pop_back();
+		counter++;
+	}
+
+	// Get how many monsters were killed
+	killCount = numOfMobs - counter;
+
+	finalScore = (static_cast<int>(turnsSurvived / 3) + killCount + winBonus);
+
+	Console::setCursorPosition(0, 0);
+	Console::setColour(Console::WHITE, Console::GREEN);
+	cout << "YOU WON!" << endl;
+	Console::setColour(Console::AQUA, Console::BLACK);
+	cout << endl << "Results:" << endl;
+	Console::setColour(Console::WHITE, Console::BLACK);
+	cout << "SCORE: " << finalScore << endl;
+	cout << "MONSTERS KILLED: " << killCount << endl;
+	cout << "TURNS SURVIVED: " << turnsSurvived << endl;
+
+	// Register results in a log file
+	logFile << controller.playerVector[0].getName() << " won the game by killing " << killCount << " monsters in a mere " << turnsSurvived << " turns! Final Score: " << finalScore << endl;
+
+	// Reset stats for the next game
+	turnsSurvived = 0;
+	finalScore = 0;
+	gameWon = false;
+	gameLost = false;
+	controller.setPlayerBombs(0);
+
+	// Reset Player Vector for the next game
+	while (!controller.playerVector.empty())
+	{
+		controller.playerVector.pop_back();
+	}
+
+	// Reset Bomb Vector for the next game
+	while (!bombVector.empty())
+	{
+		bombVector.pop_back();
+	}
+
+	// Reset Hole Vector for the next game
+	while (!holeVector.empty())
+	{
+		holeVector.pop_back();
+	}
+
+	while (exitResults != true)
+	{
+		keyPressed = _getch();
+
+		switch (keyPressed)
+		{
+		case (13):
+			Console::clear();
+			Console::setCursorPosition(0, 0);
+			exitResults = true;
+
+			mainMenu();
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+/*
+Function that compacts the "prepareGame", "playGame" and "gameOver"/"winGame"
 functions.
 */
 void GameManager::gameLoop()
@@ -1853,5 +1967,12 @@ void GameManager::gameLoop()
 	prepareGame();
 	playGame();
 	Console::clear();
-	gameOver();
+	if (gameWon == true)
+	{
+		winGame();
+	}
+	else if (gameLost == true)
+	{
+		gameOver();
+	}
 }

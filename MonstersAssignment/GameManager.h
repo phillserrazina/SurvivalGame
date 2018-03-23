@@ -1,6 +1,7 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include<fstream>
 #include "GameController.h"
 #include "PickableBomb.h"
 #include "Manhole.h"
@@ -23,6 +24,11 @@ private:
 
 	int gridX;
 	int gridY;
+
+	bool gameWon;
+	bool gameLost;
+
+	std::string deathReason;
 
 	Grid grid;
 
@@ -55,6 +61,7 @@ public:
 	void prepareGame();
 	void playGame();
 	void gameOver();
+	void winGame();
 
 	// Game Structure
 	void gameLoop();
