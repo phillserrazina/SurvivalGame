@@ -4,33 +4,35 @@
 #include<iostream>
 #include<conio.h>
 #include<vector>
-#include "CostumMath.h"
-#include "Player.h"
-#include "Monster.h"
-#include "GridManager.h"
-#include "GameManager.h"
 #include "console.h"
+#include "GridManager.h"
+#include "Bomb.h"
 
 using namespace std;
 
 class Controller
 {
 private:
-	CostumMath controllerMath;
-
-	vector<Monster> mobVec;
-	vector<Player> playerVec;
+	Bomb bomb;
+	int playerBombs;
 
 public:
-	void setMobVec(vector<Monster> *);
-	void setPlayerVec(vector<Player> *);
+	Controller();
+
+	vector<Monster> mobVector;
+	vector<Player> playerVector;
+
+	Bomb& getBomb();
+
+	void setPlayerBombs(int);
+	int getPlayerBombs();
 
 	void movePlayer(Player &, Grid);
 
-	void mobRoaming(Monster &, Player &, Grid grid);
+	void mobRoaming(Monster &, Player &, Grid);
 	void mobChasing(Monster &, Player &);
 	
-	void moveMob(Monster &, Player &, Grid grid);
+	void moveMob(Monster &, Player &, Grid);
 };
 
 #endif // !GAME_CONTROLLER_H

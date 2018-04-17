@@ -1,7 +1,13 @@
 #include "Player.h"
 
-Player::Player(std::string s, char c) : Character(s, c)
+std::string Player::playerName = "Default";
+char Player::playerAvatar = '@';
+
+Player::Player()
 {
+	name = playerName;
+	avatar = playerAvatar;
+
 	xPos = 1;
 	yPos = 1;
 }

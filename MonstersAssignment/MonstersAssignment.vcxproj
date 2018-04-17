@@ -110,24 +110,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="CostumMath.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GridManager.cpp" />
+    <ClCompile Include="Manhole.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="PickableBomb.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="CostumMath.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GridManager.h" />
+    <ClInclude Include="Manhole.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="PickableBomb.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

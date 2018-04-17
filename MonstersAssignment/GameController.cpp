@@ -1,19 +1,23 @@
 #include "GameController.h"
 
-void Controller::setMobVec(vector<Monster> *mv)
+Controller::Controller()
 {
-	for (int i = 0; i < mv->size(); i++)
-	{
-		mobVec.push_back(mv->at(i));
-	}
+	playerBombs = 0;
 }
 
-void Controller::setPlayerVec(vector<Player> *pv)
+Bomb& Controller::getBomb()
 {
-	for (int i = 0; i < pv->size(); i++)
-	{
-		playerVec.push_back(pv->at(i));
-	}
+	return this->bomb;
+}
+
+void Controller::setPlayerBombs(int i)
+{
+	playerBombs = i;
+}
+
+int Controller::getPlayerBombs()
+{
+	return playerBombs;
 }
 
 /*
@@ -75,6 +79,23 @@ void Controller::movePlayer(Player &player, Grid grid)
 			
 		break;
 
+	case 'b':
+		// If the player has any bombs and presses 'b', place one
+		if (playerBombs > 0)
+		{
+			if (bomb.getBombPlaced() == false)
+			{
+				bomb.setX(player.getX());
+				bomb.setY(player.getY());
+			}
+
+			bomb.setBombPlaced(true);
+
+			playerBombs--;
+		}
+		
+		break;
+
 	// Detect Arrows
 	default:
 		
@@ -131,6 +152,21 @@ void Controller::movePlayer(Player &player, Grid grid)
 	Console::setColour(Console::WHITE, Console::BLACK);
 	Console::setCursorPosition(player.getY(), player.getX());
 	std::cout << player.getAvatar();
+	
+	if (bomb.getBombPlaced() == true)
+	{
+		bomb.boomBomb(mobVector, player);
+
+		Console::setCursorPosition(bomb.getY(), bomb.getX());
+		cout << bomb.getAvatar();
+	}
+	if (bomb.getBombPlaced() == false)
+	{
+		Console::setCursorPosition(bomb.getY(), bomb.getX());
+		cout << " ";
+		bomb.setX(105);
+		bomb.setY(1);
+	}
 }
 
 /*
@@ -140,13 +176,13 @@ void Controller::movePlayer(Player &player, Grid grid)
 */
 void Controller::mobRoaming(Monster &mob, Player &player, Grid grid)
 {
-	int distFromMobToPlayer = controllerMath.getVectorLenght(mob.getX(), mob.getY(), 
-															player.getX(), player.getY());
+	int distFromMobToPlayer = CostumMath::getVectorLenght(mob.getX(), mob.getY(), 
+														  player.getX(), player.getY());
 
 	int lastX = mob.getX();
 	int lastY = mob.getY();
 
-	int randNum = controllerMath.getRandom(1, 5);
+	int randNum = CostumMath::getRandom(1, 5);
 
 	switch (randNum)
 	{
@@ -252,7 +288,7 @@ void Controller::mobChasing(Monster &mob, Player &player)
 	// If player is NORTHWEST, move up or left
 	if ((player.getX() < mob.getX()) && (player.getY() < mob.getY()))
 	{
-		int rand = controllerMath.getRandom(1, 100);
+		int rand = CostumMath::getRandom(1, 100);
 
 		if (rand <= 50)
 		{
@@ -267,7 +303,7 @@ void Controller::mobChasing(Monster &mob, Player &player)
 	// If player is NORTHEAST, move up or right
 	if ((player.getX() > mob.getX()) && (player.getY() < mob.getY()))
 	{
-		int rand = controllerMath.getRandom(1, 100);
+		int rand = CostumMath::getRandom(1, 100);
 
 		if (rand <= 50)
 		{
@@ -282,7 +318,7 @@ void Controller::mobChasing(Monster &mob, Player &player)
 	// If player is SOUTHEAST, move down or right
 	if ((player.getX() > mob.getX()) && (player.getY() > mob.getY()))
 	{
-		int rand = controllerMath.getRandom(1, 100);
+		int rand = CostumMath::getRandom(1, 100);
 
 		if (rand <= 50)
 		{
@@ -297,7 +333,7 @@ void Controller::mobChasing(Monster &mob, Player &player)
 	// If player is SOUTHWEST, move down or left
 	if ((player.getX() < mob.getX()) && (player.getY() > mob.getY()))
 	{
-		int rand = controllerMath.getRandom(1, 100);
+		int rand = CostumMath::getRandom(1, 100);
 
 		if (rand <= 50)
 		{

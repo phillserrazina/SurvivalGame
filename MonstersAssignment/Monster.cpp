@@ -1,6 +1,6 @@
 #include "Monster.h"
 
-int Monster::killCount = 0;
+char Monster::monsterAvatar = 'M';
 
 Monster::Monster(std::string s, char c) : Character(s, c)
 {
@@ -10,6 +10,8 @@ Monster::Monster(std::string s, char c) : Character(s, c)
 
 	xPos = 1;
 	yPos = 1;
+
+	health = 1;
 }
 
 void Monster::setState(State s)
@@ -52,17 +54,27 @@ int Monster::getChasingCooldown()
 	return chasingCooldown;
 }
 
-void Monster::setCanMove(bool b)
+void Monster::setHealth(int i)
 {
-	canMove = b;
+	health = i;
 }
 
-bool Monster::getCanMove()
+int Monster::getHealth()
 {
-	return canMove;
+	return health;
+}
+
+void Monster::setDead(bool b)
+{
+	isDead = b;
+}
+
+bool Monster::getDead()
+{
+	return isDead;
 }
 
 Monster::~Monster()
 {
-	killCount++;
+	
 }

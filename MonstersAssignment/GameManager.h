@@ -1,14 +1,10 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
-#include<iostream>
-#include<vector>
-#include<conio.h>
-#include "GridManager.h"
-#include "console.h"
+#include<fstream>
 #include "GameController.h"
-#include "Player.h"
-#include "Monster.h"
+#include "PickableBomb.h"
+#include "Manhole.h"
 
 using namespace std;
 
@@ -20,18 +16,26 @@ private:
 	int numOfPlayers;
 	int numOfMobs;
 
+	int numOfBombs;
+	int numOfManholes;
+
 	int gridWidth;
 	int gridHeight;
 
 	int gridX;
 	int gridY;
 
+	bool gameWon;
+	bool gameLost;
+
+	std::string deathReason;
+
 	Grid grid;
 
-	vector<Player> playerVector;
-	vector<Monster> mobVector;
+	Controller controller;
 
-	CostumMath gameMath;
+	vector<PickBomb> bombVector;
+	vector<Manhole> holeVector;
 
 public:
 	GameManager();
@@ -50,11 +54,14 @@ public:
 	// Character's Info Managers
 	void setPlayersInfo();
 	void setMobsInfo();
+	void dropBombs();
+	void setManholes();
 
 	// Core Game Functions
 	void prepareGame();
 	void playGame();
 	void gameOver();
+	void winGame();
 
 	// Game Structure
 	void gameLoop();
