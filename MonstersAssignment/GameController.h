@@ -5,10 +5,7 @@
 #include<conio.h>
 #include<vector>
 #include "console.h"
-#include "CostumMath.h"
 #include "GridManager.h"
-#include "Player.h"
-#include "Monster.h"
 #include "Bomb.h"
 
 using namespace std;

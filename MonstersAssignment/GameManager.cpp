@@ -1490,7 +1490,7 @@ a random position to start the game in.
 */
 void GameManager::setPlayersInfo()
 {
-	for (int i = 1; i <= numOfPlayers; i++)
+	for (int i = 0; i < numOfPlayers; i++)
 	{
 		CostumMath math;
 
@@ -1518,7 +1518,7 @@ a random position to start the game in.
 */
 void GameManager::setMobsInfo()
 {
-	for (int i = 1; i <= numOfMobs; i++)
+	for (int i = 0; i < numOfMobs; i++)
 	{
 		// Variables
 		string mName = "Monster";
@@ -1727,7 +1727,6 @@ void GameManager::playGame()
 							holeVector.erase(holeVector.begin() + k);
 						}
 					}
-					
 				}
 
 				// If the monster is dead

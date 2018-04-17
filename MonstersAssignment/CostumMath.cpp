@@ -26,16 +26,6 @@ float CostumMath::getVectorLenght(int xV1, int yV1, int xV2, int yV2)
 	return lenght;
 }
 
-float CostumMath::getVectorLenght(MathVector v)
-{
-	float ABx = v.x1 - v.x2;
-	float ABy = v.y1 - v.y2;
-
-	float lenght = sqrt((ABx * ABx) + (ABy * ABy));
-
-	return lenght;
-}
-
 // Powers
 // base ^ exponent
 double CostumMath::getPower(double base, int exponent)
